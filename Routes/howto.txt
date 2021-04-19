@@ -1,0 +1,23 @@
+
+
+
+
+
+const 	router 			=	require('express').Router(),
+		bodyParser		=	require('body-parser'),
+		fs 				=	require('fs'),
+		path			=	require('path'),
+		formidable 		= 	require('formidable');
+const Image	=	require('../models/image-model');
+const Pending	=	require('../models/pending-model');
+
+
+router.get('/', (req,res) => {
+res.render('adminlogin');
+});
+
+router.get('/*',(req,res) => {
+	res.redirect('/error');
+});
+
+module.exports = router;
