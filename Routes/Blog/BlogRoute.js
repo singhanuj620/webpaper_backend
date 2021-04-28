@@ -2,22 +2,25 @@ const router = require("express").Router();
 
 const Blog = require("../../Models/BlogModel");
 
-router.post("/abhinav", (req, res) => {
-  let {title, content, poster, author, likes, saves} = req.body ;
+router.post("/create", (req, res) => {
+  let {title, author, content} = req.body ;
   let newBlog = new Blog({
     title : title,
     content : content,
-    poster : poster,
-    author : author,
-    likes : likes,
-    saves : saves
+    author : author
   });
 
   newBlog.save((err, result) => {
     if(err){
-      res.status(400).json({message : "Error in saving blog post"})
+      return res.status(400).json({message : "Error in saving blog post in Db"})
     }
-    res.status(200).json({message : "Success"})
+    console.log(result)
+    res.status(200).json({
+        status: 200,
+        data: {
+            blogId: result._id
+        }
+    })
   })
 });
 

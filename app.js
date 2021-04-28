@@ -1,9 +1,13 @@
 //LOADING ENV VARIABLES:
 require("dotenv").config();
-
+var cors = require('cors')
 // IMPORTING DEPENDENCAIES
 var express = require("express");
 app = express();
+app.use(cors());
+const path = require('path');
+const buildPath = path.join(__dirname, '..', 'build');
+app.use(express.static(buildPath));
 const mongoose = require("mongoose");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -35,23 +39,15 @@ app.get("/api/sample", (req, res) => {
   });
 });
 
-app.post("/api/sample/user", (req, res) => {
-  let { name, designation } = req.body;
-  const newUser = new User({
-    name: name,
-    designation: designation
-  });
-
-  newUser.save((err, result) => {
-    if (err) {
-      console.log("Error in saving db data");
-    } else {
-      res.status(200).json({
-        message: "Recieved",
-        result: result,
-      });
-    }
-  });
+app.post("/api/sample", (req, res) => {
+  let { title, author, content } = req.body;
+  const newUser = {
+    title: title ,
+    author: author,
+    content : content
+  };
+  console.log(newUser);
+  res.status(200).json({message : newUser});
 });
 
 app.post("/api/sample/:id", (req, res) => {

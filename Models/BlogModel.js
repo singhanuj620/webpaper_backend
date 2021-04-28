@@ -7,11 +7,17 @@ const blogSchema = new Schema({
   content: String,
   poster: String,
   author: {
-      type : ObjectId,
-      ref : "user"
+      type : String,
+      required : true
   },
-  likes: Number,
-  saves: Number,
+  likes: {
+    type : Number,
+    default : 0
+  },
+  saves: {
+    type : Number,
+    default : 0
+  },
 });
 
 const Blog = mongoose.model("blog", blogSchema);
