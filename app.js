@@ -28,10 +28,16 @@ const Sample = require("./Models/SampleModel");
 const User = require("./Models/UserModel");
 
 // IMPORTING ROUTES
+
+// Blog Routes
+// 1 : Create Blog
+// 2 : Fetch Blog with _id
 const blogRoutes = require("./Routes/Blog/BlogRoute");
 app.use("/api/article/", blogRoutes);
-// ROUTES
 
+
+
+// ROUTES
 app.get("/api/sample", (req, res) => {
   res.status(200).json({
     message: "Working",
