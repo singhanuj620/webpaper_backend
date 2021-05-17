@@ -26,6 +26,7 @@ mongoose
 // IMPORTING DB MODELS
 const Sample = require("./Models/SampleModel");
 const User = require("./Models/UserModel");
+const Image = require("./Models/ImageModel");
 
 // IMPORTING ROUTES
 
@@ -38,6 +39,20 @@ app.use("/api/article/", blogRoutes);
 
 
 // ROUTES
+
+// app.post('/profile', upload.single('upload'), (req, res) => {
+//   const newImage = new Image({
+//     image: req.file.buffer
+//   });
+//   newImage.save();
+//   res.json({
+//     message: "saved"
+//   });
+// }, (error, req, res, next) => {
+//   res.status(400).send({ error: error.message })
+// })
+
+
 app.get("/api/sample", (req, res) => {
   res.status(200).json({
     message: "Working",
@@ -48,12 +63,12 @@ app.get("/api/sample", (req, res) => {
 app.post("/api/sample", (req, res) => {
   let { title, author, content } = req.body;
   const newUser = {
-    title: title ,
+    title: title,
     author: author,
-    content : content
+    content: content
   };
   console.log(newUser);
-  res.status(200).json({message : newUser});
+  res.status(200).json({ message: newUser });
 });
 
 app.post("/api/sample/:id", (req, res) => {

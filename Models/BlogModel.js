@@ -1,23 +1,24 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const {ObjectId} = mongoose.Schema;
+const { ObjectId } = mongoose.Schema;
 
 const blogSchema = new Schema({
   title: String,
   content: String,
   poster: String,
   author: {
-      type : String,
-      required : true
+    type: String,
+    required: true
   },
   likes: {
-    type : Number,
-    default : 0
+    type: Number,
+    default: 0
   },
   saves: {
-    type : Number,
-    default : 0
+    type: Number,
+    default: 0
   },
+  poster: { data: Buffer, posterType: { type: String, default: "png" } }
 });
 
 const Blog = mongoose.model("blog", blogSchema);
