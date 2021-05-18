@@ -48,6 +48,11 @@ router.get("/:blogId", (req, res) => {
     if (err) {
       return res.status(400).json({ message: "Error from fetching blog post in Db" })
     }
+    if (result.length == 0) {
+      return res.status(400).json({
+        error: "No Blog Found"
+      });
+    }
     res.status(200).json({
       result: result[0]
     });
