@@ -5,7 +5,7 @@ const Blog = require("../../Models/BlogModel");
 const multer = require("multer");
 const upload = multer({
   limits: {
-    fileSize: 2000000,
+    fileSize: 5000000,
   },
   fileFilter(req, file, cb) {
     if (!file.originalname.match(/\.(png|jpg|jpeg)$/)) {
@@ -53,8 +53,21 @@ router.get("/:blogId", (req, res) => {
         error: "No Blog Found"
       });
     }
+    var imgBuffer = result[0].poster.data;
+    var imgString = imgBuffer.toString('base64');
+    var imgType = result[0].poster.posterType;
+    var finalImgString = `data:image/${imgType};base64, ${imgString}`;
+    var newResult = {
+      _id: result[0]._id,
+      title: result[0].title,
+      content: result[0].content,
+      likes: result[0].likes,
+      saves: result[0].saves,
+      author: result[0].author,
+      poster: finalImgString
+    };
     res.status(200).json({
-      result: result[0]
+      result: newResult
     });
   })
 

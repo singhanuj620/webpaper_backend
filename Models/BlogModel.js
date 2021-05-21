@@ -5,7 +5,6 @@ const { ObjectId } = mongoose.Schema;
 const blogSchema = new Schema({
   title: String,
   content: String,
-  poster: String,
   author: {
     type: String,
     required: true
