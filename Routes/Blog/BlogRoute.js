@@ -73,6 +73,28 @@ router.get("/:blogId", (req, res) => {
 
 });
 
+
+// Updating blog
+router.post("/edit/:blogId", upload.single('poster'), (req, res) => {
+  let blogId = req.params.blogId;
+  let { title, author, content, posterType } = req.body;
+  let newData = { title: title, author: author, content: content }
+  if (posterType != "") {
+    newData.poster = { data: req.file.buffer, posterType: posterType }
+  }
+  Blog.where({ _id: blogId }).updateOne(newData).exec((err, result) => {
+    if (err) {
+      return res.status(400).json({ message: "Error in updating blog post in Db" })
+    }
+    return res.status(200).json({
+      status: 200,
+      data: {
+        blogId: blogId
+      }
+    })
+  });
+});
+
 router.get("/abhinav", (req, res) => {
   // Blog.find({}, (err, result) => {
   //   if(err){
