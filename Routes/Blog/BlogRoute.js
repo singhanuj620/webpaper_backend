@@ -95,6 +95,19 @@ router.post("/edit/:blogId", upload.single('poster'), (req, res) => {
   });
 });
 
+// Deleting the blog : 
+router.get("/delete/:blogId", (req, res) => {
+  const blogId = req.params.blogId;
+  Blog.deleteOne({ _id: blogId }).exec((err, result) => {
+    if (err) {
+      return res.status(400).json({ message: "Error in deleting blog post in Db" })
+    }
+    return res.status(200).json({
+      status: 200
+    });
+  })
+});
+
 router.get("/abhinav", (req, res) => {
   // Blog.find({}, (err, result) => {
   //   if(err){
