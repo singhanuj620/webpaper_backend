@@ -1,6 +1,8 @@
 const router = require("express").Router();
 
 const Blog = require("../../Models/BlogModel");
+var { checkAuthenticated, checkNotAuthenticated } = require('../Common/UserAuthCheck');
+
 
 const multer = require("multer");
 const upload = multer({
@@ -122,6 +124,10 @@ router.get("/abhinav", (req, res) => {
     }
     res.json({ message: result })
   });
+})
+
+router.get("/test/ll", checkAuthenticated, (req, res) => {
+  res.status(200).json({ message: req.user })
 })
 
 router.get("/*", (req, res) => {

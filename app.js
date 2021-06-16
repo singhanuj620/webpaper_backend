@@ -81,70 +81,40 @@ app.use(passport.session());
 
 // IMPORTING ROUTES
 
-// Blog Routes
-// 1 : Create Blog
-// 2 : Fetch Blog with _id
-const blogRoutes = require("./Routes/Blog/BlogRoute");
-app.use("/api/article/", blogRoutes);
 
 // User Authentication Route
 const authRoutes = require("./Routes/Authentication/AuthRoute");
 app.use("/api/auth/", authRoutes);
 
 
+// Blog Routes
+// 1 : Create Blog
+// 2 : Fetch Blog with _id
+const blogRoutes = require("./Routes/Blog/BlogRoute");
+app.use("/api/article/", blogRoutes);
+
+
+
+
 
 // ROUTES
 
-// app.post('/profile', upload.single('upload'), (req, res) => {
-//   const newImage = new Image({
-//     image: req.file.buffer
-//   });
-//   newImage.save();
-//   res.json({
-//     message: "saved"
-//   });
-// }, (error, req, res, next) => {
-//   res.status(400).send({ error: error.message })
-// })
+// To Check from React side whether User is logged or not
+app.get("/api/isLogged", (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.status(200).json({ data: req.user });
+    // Req.User{
+    //   _id: 
+    //   username:
+    //   email:
+    //   password(encrypted)
+    // }
+  }
+  else {
+    return res.status(400).json({ data: "no" });
+  }
+})
 
-
-app.get("/api/sample", (req, res) => {
-  res.status(200).json({
-    message: "Working",
-    author: "Anuj Singh",
-  });
-});
-
-app.post("/api/sample", (req, res) => {
-  let { title, author, content } = req.body;
-  const newUser = {
-    title: title,
-    author: author,
-    content: content
-  };
-  console.log(newUser);
-  res.status(200).json({ message: newUser });
-});
-
-app.post("/api/sample/:id", (req, res) => {
-  let { name, workingStatus } = req.body;
-  console.log(name, workingStatus);
-  const newPerson = new Sample({
-    name: name,
-    workingStatus: workingStatus,
-  });
-
-  newPerson.save((err, result) => {
-    if (err) {
-      console.log("Error in saving db data");
-    } else {
-      res.status(200).json({
-        message: "Recieved",
-        result: result,
-      });
-    }
-  });
-});
 
 // STARTING SERVER
 const PORT = process.env.PORT || 8000;
