@@ -3,9 +3,8 @@ const passport = require('passport');
 var bcrypt = require('bcrypt');
 var { checkAuthenticated, checkNotAuthenticated } = require('../Common/UserAuthCheck');
 
+// Importing User DB Model
 const User = require("../../Models/UserModel");
-
-
 
 // router.get('/login', checkNotAuthenticated, (req, res) => {
 //     res.redirect("/api/auth/successlogin");
@@ -15,6 +14,8 @@ const User = require("../../Models/UserModel");
 //     res.redirect("/api/auth/successregister");
 // });
 
+
+// Registering New User and Saving In DB with encrypted password
 router.post("/register", checkNotAuthenticated, async (req, res) => {
     var hashedPassword = await bcrypt.hash(req.body.password, 10);
     console.log(hashedPassword)
@@ -31,19 +32,25 @@ router.post("/register", checkNotAuthenticated, async (req, res) => {
     })
 });
 
+
+// Login Router with PassportJS Layer
 router.post("/login", checkNotAuthenticated, passport.authenticate('local', {
     successRedirect: '/api/auth/successRedirect',
     failureRedirect: '/api/auth/failureRedirect'
 }))
 
+// If Login Route Failed
 router.get("/failureRedirect", (req, res) => {
     res.status(400).json({ message: "Not login" })
 })
 
+// If Login Router Succeed
 router.get("/successRedirect", (req, res) => {
     res.status(200).json({ message: "login" })
 })
 
+
+// For Logout of logged in User
 router.delete("/logout", (req, res) => {
     req.logOut();
     res.status(200).json({ message: "LoggedOut" })
@@ -57,13 +64,17 @@ router.delete("/logout", (req, res) => {
 //     res.status(200).json({ message: "Success Register" })
 // })
 
+
+// Sample/Test API
 router.get("/test", checkAuthenticated, (req, res) => {
     res.status(200).json({ message: "Reached" })
 })
 
+
+// Default Route
 router.get("/*", (req, res) => {
     res.status(400).json({
-        error: "Page Not Found",
+        error: "No Auth Route for this",
     });
 });
 

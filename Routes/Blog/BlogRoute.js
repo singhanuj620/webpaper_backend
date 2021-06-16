@@ -3,7 +3,7 @@ const router = require("express").Router();
 const Blog = require("../../Models/BlogModel");
 var { checkAuthenticated, checkNotAuthenticated } = require('../Common/UserAuthCheck');
 
-
+// For Saving Poster Image for Blog Post
 const multer = require("multer");
 const upload = multer({
   limits: {
@@ -16,6 +16,7 @@ const upload = multer({
     cb(undefined, true)
   }
 });
+
 
 // Creation of new blog
 router.post("/create", upload.single('poster'), (req, res) => {
@@ -97,6 +98,7 @@ router.post("/edit/:blogId", upload.single('poster'), (req, res) => {
   });
 });
 
+
 // Deleting the blog : 
 router.get("/delete/:blogId", (req, res) => {
   const blogId = req.params.blogId;
@@ -110,6 +112,7 @@ router.get("/delete/:blogId", (req, res) => {
   })
 });
 
+// Sample/Test APIs
 router.get("/abhinav", (req, res) => {
   // Blog.find({}, (err, result) => {
   //   if(err){
@@ -130,6 +133,8 @@ router.get("/test/ll", checkAuthenticated, (req, res) => {
   res.status(200).json({ message: req.user })
 })
 
+
+// Default API
 router.get("/*", (req, res) => {
   res.status(400).json({
     error: "Page Not Found",

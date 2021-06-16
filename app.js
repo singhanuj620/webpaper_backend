@@ -2,15 +2,15 @@
 require("dotenv").config();
 
 
-var cors = require('cors')
-
 // IMPORTING DEPENDENCAIES
 var express = require("express");
 app = express();
 
+// Enabling Cross Origin Requests
+var cors = require('cors')
 app.use(cors());
 
-
+// Pre-Requisite for using Passport Js for User Authentication
 const session = require('express-session');
 const passport = require('passport');
 var bcrypt = require('bcrypt');
@@ -50,7 +50,7 @@ const User = require("./Models/UserModel");
 const Image = require("./Models/ImageModel");
 
 
-
+// Initializing Passport JS in App.Js
 const initializePassport = require("./PassportConfig");
 
 
@@ -73,11 +73,6 @@ initializePassport(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// (async () => {
-//   let t = await userId("60c889cba45228226414c0ec")
-//   console.log(t)
-// })();
-
 
 // IMPORTING ROUTES
 
@@ -88,16 +83,11 @@ app.use("/api/auth/", authRoutes);
 
 
 // Blog Routes
-// 1 : Create Blog
-// 2 : Fetch Blog with _id
 const blogRoutes = require("./Routes/Blog/BlogRoute");
 app.use("/api/article/", blogRoutes);
 
 
-
-
-
-// ROUTES
+// Common ROUTES
 
 // To Check from React side whether User is logged or not
 app.get("/api/isLogged", (req, res) => {

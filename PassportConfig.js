@@ -1,6 +1,7 @@
 const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt');
 
+// Checking if user object is empty or not
 function isEmpty(obj) {
     for (var key in obj) {
         if (obj.hasOwnProperty(key))
@@ -9,6 +10,8 @@ function isEmpty(obj) {
     return true;
 }
 
+
+// Main PassportJS Logic for User Authentication
 async function initialize(passport, getUserByEmail, getUserById) {
     const authenticateUser = async (email, password, done) => {
         const user = await getUserByEmail(email);

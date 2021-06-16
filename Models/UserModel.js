@@ -5,6 +5,9 @@ const userSchema = new Schema({
   username: String,
   email: String,
   password: String,
+  posts: { type: Array, default: [] },
+  likes: { type: Array, default: [] },
+  saves: { type: Array, default: [] }
 });
 
 const User = mongoose.model("user", userSchema);
