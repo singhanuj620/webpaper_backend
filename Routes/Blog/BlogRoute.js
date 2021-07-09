@@ -1,7 +1,6 @@
 const router = require("express").Router();
 
 const Blog = require("../../Models/BlogModel");
-var { checkAuthenticated, checkNotAuthenticated } = require('../Common/UserAuthCheck');
 
 // For Saving Poster Image for Blog Post
 const multer = require("multer");
@@ -46,7 +45,7 @@ router.post("/create", upload.single('poster'), (req, res) => {
 // Fetching of blog from _id
 router.get("/:blogId", (req, res) => {
   let { blogId } = req.params;
-  let newBlog = Blog.find({ _id: blogId });
+  let newBlog = Blog.find({ _id: blogId }).populate("author");
   newBlog.exec((err, result) => {
     if (err) {
       return res.status(400).json({ message: "Error from fetching blog post in Db" })
@@ -129,9 +128,6 @@ router.get("/abhinav", (req, res) => {
   });
 })
 
-router.get("/test/ll", checkAuthenticated, (req, res) => {
-  res.status(200).json({ message: req.user })
-})
 
 
 // Default API

@@ -6,8 +6,8 @@ const blogSchema = new Schema({
   title: String,
   content: String,
   author: {
-    type: String,
-    required: true
+    type: ObjectId,
+    ref: "user"
   },
   likes: {
     type: Number,
