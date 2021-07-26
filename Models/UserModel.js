@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
+const { ObjectId } = mongoose.Schema;
 
 const userSchema = new Schema({
   firstName: { type: String, required: true },
@@ -8,9 +9,18 @@ const userSchema = new Schema({
   username: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  posts: { type: Array, default: [] },
-  likes: { type: Array, default: [] },
-  saves: { type: Array, default: [] },
+  posts: [{
+    type: ObjectId,
+    ref: "blog"
+  }],
+  likes: [{
+    type: ObjectId,
+    ref: "blog"
+  }],
+  saves: [{
+    type: ObjectId,
+    ref: "blog"
+  }],
   token: { type: String }
 });
 
