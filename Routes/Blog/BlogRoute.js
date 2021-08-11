@@ -47,6 +47,27 @@ router.post("/create", upload.single('poster'), (req, res) => {
   })
 });
 
+// Fetching top 10 blog posts
+router.get("/top10", (req, res) => {
+  Blog.find({}).sort({ 'createdAt': -1 }).limit(10).populate("author").exec((err, result) => {
+    if (err) {
+      return res.status(400).json({ message: "Error in fetching top 10 blogs from db" })
+    }
+    for (let i = 0; i < result.length; i++) {
+      var imgBuffer = result[i].poster.data;
+      var imgString = imgBuffer.toString('base64');
+      var imgType = result[i].poster.posterType;
+      var finalImgString = `data:image/${imgType};base64, ${imgString}`;
+      var temp = { ...result[i]._doc };
+      temp.poster = finalImgString
+      result[i] = temp;
+    }
+    // console.log(result[0])
+    return res.status(200).json({
+      data: result
+    });
+  });
+});
 
 // Fetching of blog from _id
 router.get("/:blogId", (req, res) => {
@@ -72,7 +93,9 @@ router.get("/:blogId", (req, res) => {
       likes: result[0].likes,
       saves: result[0].saves,
       author: result[0].author,
-      poster: finalImgString
+      poster: finalImgString,
+      createdAt: result[0].createdAt,
+      updatedAt: result[0].updatedAt
     };
     res.status(200).json({
       result: newResult

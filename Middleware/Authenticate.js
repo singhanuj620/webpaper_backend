@@ -10,16 +10,18 @@ const Authenticate = async (req, res, next) => {
         if (!rootUser) {
             throw new Error("User not found")
         }
-        req.token = token;
-        req.rootUser = rootUser;
-        req.userId = rootUser._id;
-        next();
+        else {
+            req.token = token;
+            req.rootUser = rootUser;
+            req.userId = rootUser._id;
+            next();
+        }
     }
     catch (err) {
         res.status(400).json({ message: "Not Authenticated" })
         console.log(err);
+        next();
     }
-    next();
 }
 
 module.exports = Authenticate;

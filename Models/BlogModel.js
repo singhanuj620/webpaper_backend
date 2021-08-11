@@ -18,7 +18,8 @@ const blogSchema = new Schema({
     default: 0
   },
   poster: { data: Buffer, posterType: { type: String, default: "png" } }
-});
+},
+  { timestamps: true });
 
 const Blog = mongoose.model("blog", blogSchema);
 
