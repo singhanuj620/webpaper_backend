@@ -1,5 +1,5 @@
 const router = require("express").Router();
-
+const Authenticate = require("../../Middleware/Authenticate")
 const Blog = require("../../Models/BlogModel");
 const User = require("../../Models/UserModel")
 
@@ -69,6 +69,31 @@ router.get("/top10", (req, res) => {
   });
 });
 
+// Checking the user that requested blog data is it's owner or not
+router.post("/authorized/:blogId", Authenticate, function (req, res) {
+  Blog.findOne({ _id: req.params.blogId }, (err, result) => {
+    if (err) {
+      return res.status(400).json({ message: "Error in fetching blog data from db" })
+    }
+    if (result.author.toString() === req.userId.toString()) {
+      return res.status(200).json({
+        data: {
+          userId: req.userId.toString(),
+          isAuthorized: true
+        }
+      })
+    }
+    else {
+      return res.status(200).json({
+        data: {
+          isAuthorized: false
+        }
+      })
+    }
+  })
+})
+
+
 // Fetching of blog from _id
 router.get("/:blogId", (req, res) => {
   let { blogId } = req.params;
@@ -128,9 +153,9 @@ router.post("/edit/:blogId", upload.single('poster'), (req, res) => {
 
 
 // Deleting the blog : 
-router.get("/delete/:blogId", (req, res) => {
+router.post("/delete/:blogId", Authenticate, (req, res) => {
   const blogId = req.params.blogId;
-  Blog.findOneAndRemove({ _id: blogId }).exec((err, result) => {
+  Blog.findOneAndRemove({ _id: blogId, author: req.userId }).exec((err, result) => {
     if (err) {
       return res.status(400).json({ message: "Error in deleting blog post in Db" })
     }

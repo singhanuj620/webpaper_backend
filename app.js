@@ -24,7 +24,7 @@ app.use(express.json());
 
 const db_url = process.env.DB_URL;
 mongoose
-  .connect(db_url, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(db_url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
   .then(() => {
     console.log("Database Connection established");
   })
